@@ -1,10 +1,10 @@
-package main;
+package serial;
 
 public class Item {
-	public int distance;
-	public int classValue;
+	public Float distance;
+	public Float classValue;
 	
-	public Item(int _distance, int _classValue) {
+	public Item(Float _distance, Float _classValue) {
 		distance = _distance;
 		classValue = _classValue;
 	}
