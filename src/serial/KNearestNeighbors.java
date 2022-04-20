@@ -1,8 +1,5 @@
 package serial;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,58 +7,37 @@ import java.util.List;
 
 public class KNearestNeighbors {
 	
+	/*
+		# Example Results: k = 5
+		[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 9] : 6.0
+		[1, 1, 3, 3, 5, 5, 7, 7, 9, 9, 10] : 4.0
+		[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1] : 7.0
+		[2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2] : 7.0
+		[8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8] : 9.0
+		[8, 5, 9, 10, 5, 7, 2, 3, 8, 1, 5] : 4.0 
+	*/
+	
 	public static void main(String[] args) throws IOException {	
 		//1. Load the data (Value, Class). The class must be the final value.
-		ArrayList<ArrayList<Float>> data = loadData();
+		ArrayList<ArrayList<Float>> data = DatasetReader.loadData();
 
 		ArrayList<Float> newData = new ArrayList<Float>();
-		newData.add(1f);
-		newData.add(2f);
-		newData.add(3f);
-		newData.add(4f);
-		newData.add(5f);
-		newData.add(6f);
-		newData.add(7f);
 		newData.add(8f);
-		newData.add(9f);
-		newData.add(10f);
-		newData.add(11f);
+		newData.add(8f);
+		newData.add(8f);
+		newData.add(8f);
+		newData.add(8f);
+		newData.add(8f);
+		newData.add(8f);
+		newData.add(8f);
+		newData.add(8f);
+		newData.add(8f);
+		newData.add(8f);
 
 		//2. Initialize K to your chosen number of neighbors
-		int k = (int) Math.round(Math.sqrt(data.size()));
+		int k = 5/*(int) Math.round(Math.sqrt(data.size()))*/;
 		
 		System.out.println("The new item belongs to the class " + knn(data, newData, k) + ", with a k=" + k + ".");	
-	}
-	
-	private static ArrayList<ArrayList<Float>> loadData() throws IOException {
-		ArrayList<ArrayList<Float>> dataset = new ArrayList<ArrayList<Float>>();
-		
-		File file = new File("src\\serial\\dataset.json");
-		BufferedReader br = new BufferedReader(new FileReader(file));
-		String st;
-		int cont = 0;
-		
-		while((st = br.readLine()) != null) {
-			cont++;
-			if(st.charAt(0) == '{' && cont > 2) {
-				int contador = 0;
-				ArrayList<Float> line = new ArrayList<Float>();
-				while((st = br.readLine()) != null && contador < 12) {
-					if(contador == 11) {
-						line.add(Float.parseFloat(st.substring(st.lastIndexOf(':')+2, st.length()-1)));
-					}
-					else {
-						line.add(Float.parseFloat(st.substring(st.lastIndexOf(':')+2, st.length()-2)));
-					}
-					contador++;
-				}
-				dataset.add(line);
-			}
-		}
-		
-		br.close();
-		
-		return dataset;
 	}
 	
 	private static Float knn(ArrayList<ArrayList<Float>> sample, ArrayList<Float> newSample, int k) {
