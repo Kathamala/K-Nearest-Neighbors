@@ -5,31 +5,35 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import serial.Item;
+import serial.ItemComparator;
+
 public class KNearestNeighbors {
 	int count = 0;
 	public int k = 0;
 	
-	public static ArrayList<ArrayList<Float>> data;
-	public static ArrayList<Float> newData = new ArrayList<Float>();
+	public ArrayList<ArrayList<Float>> data;
+	public ArrayList<Float> newData = new ArrayList<Float>();
+	public List<Item> distances = new ArrayList<Item>();
 	
 	public KNearestNeighbors() throws IOException {
 		//1. Load the data (Value, Class). The class must be the final value.
 		data = DatasetReader.loadData();
  
-		newData.add(1f);
-		newData.add(2f);
-		newData.add(3f);
-		newData.add(4f);
-		newData.add(5f);
-		newData.add(6f);
-		newData.add(7f);
+		newData.add(8.2f);
+		newData.add(5.8f);
+		newData.add(0.2f);
+		newData.add(2.2f);
+		newData.add(1.1f);
 		newData.add(8f);
-		newData.add(9f);
-		newData.add(10f);
-		newData.add(9f);
+		newData.add(0.7f);
+		newData.add(2.7f);
+		newData.add(2.6f);
+		newData.add(9.8f);
+		newData.add(4.9f);
 		
 		//2. Initialize K to your chosen number of neighbors
-		k = 5/*(int) Math.round(Math.sqrt(data.size()))*/;	
+		k = 3/*(int) Math.round(Math.sqrt(data.size()))*/;	
 	}
 	
 	private static Float mostCommon(List<Float> values) {
@@ -68,6 +72,27 @@ public class KNearestNeighbors {
 	}	
 
 	public synchronized int getNext() {
+		if(count+1 == data.size()) findClass();
 		return count++;
+	}
+	
+	public Float findClass() {	
+		//4. Sort the ordered collection of distances and indices from smallest to largest (in ascending order) by the distances.
+		distances.sort(new ItemComparator());
+		
+		List<Float> classes = new ArrayList<Float>();
+			
+		//5. Pick the first K entries from the sorted collection.
+		for(int i=0; i<k; i++) {
+			//6. Get the labels of the selected K entries.
+			classes.add(distances.get(i).classValue);
+		}
+
+		//7. If regression, return the mean of the K labels
+		
+		//8. If classification, return the most common value of the K labels.
+		Float mostCommonElement = mostCommon(classes);
+		System.out.println("The new item belongs to the class " + mostCommonElement + ", with a k=" + k + ".");
+		return mostCommonElement;
 	}
 }

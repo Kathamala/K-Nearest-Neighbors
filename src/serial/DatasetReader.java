@@ -17,7 +17,7 @@ public class DatasetReader {
 		
 		while((st = br.readLine()) != null) {
 			cont++;
-			if(st.charAt(0) == '{' && cont > 2) {
+			if(st.charAt(0) == '{' && cont > 2 && cont <= 1200 /*MAX_COUNT*/) {
 				int contador = 0;
 				ArrayList<Float> line = new ArrayList<Float>();
 				while((st = br.readLine()) != null && contador < 12) {
@@ -30,6 +30,7 @@ public class DatasetReader {
 					contador++;
 				}
 				dataset.add(line);
+				//System.out.println(line);
 			}
 		}
 		

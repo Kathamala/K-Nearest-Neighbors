@@ -18,24 +18,25 @@ public class KNearestNeighbors {
 	*/
 	
 	public static void main(String[] args) throws IOException {	
+		System.out.println("SERIAL");
 		//1. Load the data (Value, Class). The class must be the final value.
 		ArrayList<ArrayList<Float>> data = DatasetReader.loadData();
 
 		ArrayList<Float> newData = new ArrayList<Float>();
+		newData.add(8.2f);
+		newData.add(5.8f);
+		newData.add(0.2f);
+		newData.add(2.2f);
+		newData.add(1.1f);
 		newData.add(8f);
-		newData.add(8f);
-		newData.add(8f);
-		newData.add(8f);
-		newData.add(8f);
-		newData.add(8f);
-		newData.add(8f);
-		newData.add(8f);
-		newData.add(8f);
-		newData.add(8f);
-		newData.add(8f);
+		newData.add(0.7f);
+		newData.add(2.7f);
+		newData.add(2.6f);
+		newData.add(9.8f);
+		newData.add(4.9f);
 
 		//2. Initialize K to your chosen number of neighbors
-		int k = 5/*(int) Math.round(Math.sqrt(data.size()))*/;
+		int k = 3/*(int) Math.round(Math.sqrt(data.size()))*/;
 		
 		System.out.println("The new item belongs to the class " + knn(data, newData, k) + ", with a k=" + k + ".");	
 	}
@@ -65,6 +66,8 @@ public class KNearestNeighbors {
 			//6. Get the labels of the selected K entries.
 			classes.add(distances.get(i).classValue);
 		}
+		
+		//System.out.println(classes);
 
 		//7. If regression, return the mean of the K labels
 		
