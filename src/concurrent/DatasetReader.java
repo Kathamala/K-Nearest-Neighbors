@@ -14,10 +14,9 @@ public class DatasetReader {
 		BufferedReader br = new BufferedReader(new FileReader(file));
 		String st;
 		int cont = 0;
-		
 		while((st = br.readLine()) != null) {
 			cont++;
-			if(st.charAt(0) == '{' && cont > 2 && cont <= 2000 /*MAX_COUNT*/) {
+			if(st.charAt(0) == '{' && cont > 2/* && cont <= 5000 *//*MAX_COUNT*/) {
 				int contador = 0;
 				ArrayList<Float> line = new ArrayList<Float>();
 				while((st = br.readLine()) != null && contador < 12) {
@@ -33,7 +32,6 @@ public class DatasetReader {
 				//System.out.println(line);
 			}
 		}
-		
 		br.close();
 		
 		return dataset;

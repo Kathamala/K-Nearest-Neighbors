@@ -19,7 +19,7 @@ public class KNearestNeighbors {
 	public KNearestNeighbors() throws IOException {
 		//1. Load the data (Value, Class). The class must be the final value.
 		data = DatasetReader.loadData();
- 
+		/*
 		newData.add(8.2f);
 		newData.add(5.8f);
 		newData.add(0.2f);
@@ -31,7 +31,18 @@ public class KNearestNeighbors {
 		newData.add(2.6f);
 		newData.add(9.8f);
 		newData.add(4.9f);
-		
+		*/
+		newData.add(1.1f);
+		newData.add(2.2f);
+		newData.add(3.3f);
+		newData.add(4.4f);
+		newData.add(5.5f);
+		newData.add(6.6f);
+		newData.add(7.7f);
+		newData.add(8.8f);
+		newData.add(9.9f);
+		newData.add(10.1f);
+		newData.add(9.9f);		
 		//2. Initialize K to your chosen number of neighbors
 		k = 3/*(int) Math.round(Math.sqrt(data.size()))*/;	
 	}
@@ -75,6 +86,10 @@ public class KNearestNeighbors {
 		if(count+1 == data.size()) findClass();
 		return count++;
 	}
+	
+	public synchronized void addDistance(Item item) {
+		distances.add(item);
+	}	
 	
 	public Float findClass() {	
 		//4. Sort the ordered collection of distances and indices from smallest to largest (in ascending order) by the distances.

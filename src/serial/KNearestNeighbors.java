@@ -23,6 +23,7 @@ public class KNearestNeighbors {
 		ArrayList<ArrayList<Float>> data = DatasetReader.loadData();
 
 		ArrayList<Float> newData = new ArrayList<Float>();
+		/*
 		newData.add(8.2f);
 		newData.add(5.8f);
 		newData.add(0.2f);
@@ -34,7 +35,18 @@ public class KNearestNeighbors {
 		newData.add(2.6f);
 		newData.add(9.8f);
 		newData.add(4.9f);
-
+		 */
+		newData.add(1.1f);
+		newData.add(2.2f);
+		newData.add(3.3f);
+		newData.add(4.4f);
+		newData.add(5.5f);
+		newData.add(6.6f);
+		newData.add(7.7f);
+		newData.add(8.8f);
+		newData.add(9.9f);
+		newData.add(10.1f);
+		newData.add(9.9f);
 		//2. Initialize K to your chosen number of neighbors
 		int k = 3/*(int) Math.round(Math.sqrt(data.size()))*/;
 		

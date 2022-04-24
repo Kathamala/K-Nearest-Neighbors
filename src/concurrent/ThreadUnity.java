@@ -23,7 +23,8 @@ public class ThreadUnity extends Thread {
 			}
 			
 			//3.2. Add the distance and the index of the example to an ordered collection.
-			knn.distances.add(new Item(distance, knn.data.get(next).get(knn.data.get(next).size()-1)));
+			//knn.distances.add(new Item(distance, knn.data.get(next).get(knn.data.get(next).size()-1)));
+			knn.addDistance(new Item(distance, knn.data.get(next).get(knn.data.get(next).size()-1)));
 			//System.out.println("Thread: " + next + " / Distance: " + distance);
 			//System.out.println("Thread: " + next + " / Distances: " + knn.distances);
 			
