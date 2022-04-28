@@ -1,7 +1,5 @@
 package concurrent;
 
-import serial.Item;
-
 public class ThreadUnity extends Thread {
 	
 	KNearestNeighbors knn;

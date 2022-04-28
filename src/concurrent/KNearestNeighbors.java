@@ -5,9 +5,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import serial.Item;
-import serial.ItemComparator;
-
 public class KNearestNeighbors {
 	int count = 0;
 	public int k = 0;
@@ -44,7 +41,7 @@ public class KNearestNeighbors {
 		newData.add(10.1f);
 		newData.add(9.9f);		
 		//2. Initialize K to your chosen number of neighbors
-		k = 3/*(int) Math.round(Math.sqrt(data.size()))*/;	
+		k = (int) Math.round(Math.sqrt(data.size()));	
 	}
 	
 	private static Float mostCommon(List<Float> values) {
