@@ -53,7 +53,7 @@ public class KNearestNeighbors {
 		System.out.println("The new item belongs to the class " + knn(data, newData, k) + ", with a k=" + k + ".");	
 	}
 	
-	private static Float knn(ArrayList<ArrayList<Float>> sample, ArrayList<Float> newSample, int k) {
+	public static Float knn(ArrayList<ArrayList<Float>> sample, ArrayList<Float> newSample, int k) {
 		List<Item> distances = new ArrayList<Item>();
 		
 		//3. For each example in the data 

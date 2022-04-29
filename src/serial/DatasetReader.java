@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class DatasetReader {
-	static ArrayList<ArrayList<Float>> loadData() throws IOException {
+	public static ArrayList<ArrayList<Float>> loadData() throws IOException {
 		ArrayList<ArrayList<Float>> dataset = new ArrayList<ArrayList<Float>>();
 		
 		File file = new File("src\\serial\\dataset.json");
@@ -17,7 +17,7 @@ public class DatasetReader {
 		
 		while((st = br.readLine()) != null) {
 			cont++;
-			if(st.charAt(0) == '{' && cont > 2/* && cont <= 5000 *//*MAX_COUNT*/) {
+			if(st.charAt(0) == '{' && cont > 2/* && cont <= 100 *//*MAX_COUNT*/) {
 				int contador = 0;
 				ArrayList<Float> line = new ArrayList<Float>();
 				while((st = br.readLine()) != null && contador < 12) {
