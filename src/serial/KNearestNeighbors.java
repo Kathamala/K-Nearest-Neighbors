@@ -42,19 +42,7 @@ public class KNearestNeighbors {
 	}
 	
 	public static Float knn(ArrayList<ArrayList<Float>> sample, ArrayList<Float> newSample, int k) {
-		List<Item> distances = new ArrayList<Item>();
-		
-		//3. For each example in the data 
-		for(int i=0; i<sample.size(); i++) {
-			//3.1. Calculate the euclidean distance between the query example and the current example from the data.
-			Float distance = 0f;
-			for(int j=0; j<sample.get(i).size()-1; j++) {
-				distance = (float) (distance + Math.pow((sample.get(i).get(j) - newSample.get(j)), 2));
-			}
-			
-			//3.2. Add the distance and the index of the example to an ordered collection.
-			distances.add(new Item(distance, sample.get(i).get(sample.get(i).size()-1)));
-		}
+		List<Item> distances = calculateDistances(sample, newSample);
 		
 		//4. Sort the ordered collection of distances and indices from smallest to largest (in ascending order) by the distances.
 		distances.sort(new ItemComparator());
@@ -74,6 +62,24 @@ public class KNearestNeighbors {
 		//8. If classification, return the most common value of the K labels.
 		return mostCommon(classes);
 	};
+	
+	private static List<Item> calculateDistances(ArrayList<ArrayList<Float>> sample, ArrayList<Float> newSample) {
+		List<Item> distances = new ArrayList<Item>();
+		
+		//3. For each example in the data 
+		for(int i=0; i<sample.size(); i++) {
+			//3.1. Calculate the euclidean distance between the query example and the current example from the data.
+			Float distance = 0f;
+			for(int j=0; j<sample.get(i).size()-1; j++) {
+				distance = (float) (distance + Math.pow((sample.get(i).get(j) - newSample.get(j)), 2));
+			}
+			
+			//3.2. Add the distance and the index of the example to an ordered collection.
+			distances.add(new Item(distance, sample.get(i).get(sample.get(i).size()-1)));
+		}
+		
+		return distances;
+	}
 	
 	private static Float mostCommon(List<Float> values) {
 		if(values == null || values.size() == 0) {
