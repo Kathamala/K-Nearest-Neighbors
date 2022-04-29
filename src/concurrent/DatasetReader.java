@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class DatasetReader {
-	static ArrayList<ArrayList<Float>> loadData() throws IOException {
+	public static ArrayList<ArrayList<Float>> loadData() throws IOException {
 		ArrayList<ArrayList<Float>> dataset = new ArrayList<ArrayList<Float>>();
 		
 		File file = new File("src\\dataset\\dataset.json");
