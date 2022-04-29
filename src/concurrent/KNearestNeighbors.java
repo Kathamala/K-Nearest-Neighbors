@@ -8,40 +8,23 @@ import java.util.List;
 public class KNearestNeighbors {
 	int count = 0;
 	public int k = 0;
+	static final int NUMBER_OF_THREADS = 8;	
 	
 	public ArrayList<ArrayList<Float>> data;
 	public ArrayList<Float> newData = new ArrayList<Float>();
 	public List<Item> distances = new ArrayList<Item>();
 	
-	public KNearestNeighbors() throws IOException {
+	public KNearestNeighbors(ArrayList<Float> _newData) throws IOException {
 		//1. Load the data (Value, Class). The class must be the final value.
 		data = DatasetReader.loadData();
-		/*
-		newData.add(8.2f);
-		newData.add(5.8f);
-		newData.add(0.2f);
-		newData.add(2.2f);
-		newData.add(1.1f);
-		newData.add(8f);
-		newData.add(0.7f);
-		newData.add(2.7f);
-		newData.add(2.6f);
-		newData.add(9.8f);
-		newData.add(4.9f);
-		*/
-		newData.add(1.1f);
-		newData.add(2.2f);
-		newData.add(3.3f);
-		newData.add(4.4f);
-		newData.add(5.5f);
-		newData.add(6.6f);
-		newData.add(7.7f);
-		newData.add(8.8f);
-		newData.add(9.9f);
-		newData.add(10.1f);
-		newData.add(9.9f);		
+		newData = _newData;
 		//2. Initialize K to your chosen number of neighbors
-		k = (int) Math.round(Math.sqrt(data.size()));	
+		k = 5/*(int) Math.round(Math.sqrt(data.size()))*/;
+		
+		for (int i = 0; i < NUMBER_OF_THREADS; i++) {
+			ThreadUnity tu = new ThreadUnity(this);
+			tu.start();
+		}		
 	}
 	
 	private static Float mostCommon(List<Float> values) {

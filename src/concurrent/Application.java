@@ -1,19 +1,15 @@
 package concurrent;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Application {
-	static final int NUMBER_OF_THREADS = 10;
-	
 	public static void main(String[] args) throws IOException {	
 		System.out.println("CONCURRENT");
-		KNearestNeighbors knn = new KNearestNeighbors();
 		
-		for (int i = 0; i < NUMBER_OF_THREADS; i++) {
-			ThreadUnity tu = new ThreadUnity(knn);
-			tu.start();
-		}
-		
-		//System.out.println(knn.distances);
+		ArrayList<Float> newData = new ArrayList<Float>(Arrays.asList(8f, 5f, 9f, 10f, 5f, 7f, 2f, 3f, 8f, 1f, 5f));		
+
+		new KNearestNeighbors(newData);
 	}	
 }
