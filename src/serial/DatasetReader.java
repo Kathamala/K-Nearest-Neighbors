@@ -10,7 +10,7 @@ public class DatasetReader {
 	public static ArrayList<ArrayList<Float>> loadData() throws IOException {
 		ArrayList<ArrayList<Float>> dataset = new ArrayList<ArrayList<Float>>();
 		
-		File file = new File("src\\serial\\dataset.json");
+		File file = new File("src\\dataset\\dataset.json");
 		BufferedReader br = new BufferedReader(new FileReader(file));
 		String st;
 		int cont = 0;
