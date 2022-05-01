@@ -10,6 +10,12 @@ public class KNearestNeighbors {
 	
 	/*
 		# Example Results: k = 5
+		new ArrayList<Float>(Arrays.asList(1f, 2f, 3f, 4f, 5f, 6f, 7f, 8f, 9f, 10f, 9f)),
+		new ArrayList<Float>(Arrays.asList(1f, 1f, 3f, 3f, 5f, 5f, 7f, 7f, 9f, 9f, 10f)),
+		new ArrayList<Float>(Arrays.asList(1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f)),
+		new ArrayList<Float>(Arrays.asList(2f, 2f, 2f, 2f, 2f, 2f, 2f, 2f, 2f, 2f, 2f)),
+		new ArrayList<Float>(Arrays.asList(8f, 8f, 8f, 8f, 8f, 8f, 8f, 8f, 8f, 8f, 8f)),
+		new ArrayList<Float>(Arrays.asList(8f, 5f, 9f, 10f, 5f, 7f, 2f, 3f, 8f, 1f, 5f))
 		[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 9] : 6.0
 		[1, 1, 3, 3, 5, 5, 7, 7, 9, 9, 10] : 4.0
 		[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1] : 7.0
@@ -22,23 +28,14 @@ public class KNearestNeighbors {
 		System.out.println("SERIAL");
 		//1. Load the data (Value, Class). The class must be the final value.
 		ArrayList<ArrayList<Float>> data = DatasetReader.loadData();
-		ArrayList<ArrayList<Float>> samples = new ArrayList<ArrayList<Float>>();
+		ArrayList<Float> sample;
 
-		Collections.addAll(samples, 
-				new ArrayList<Float>(Arrays.asList(1f, 2f, 3f, 4f, 5f, 6f, 7f, 8f, 9f, 10f, 9f)),
-				new ArrayList<Float>(Arrays.asList(1f, 1f, 3f, 3f, 5f, 5f, 7f, 7f, 9f, 9f, 10f)),
-				new ArrayList<Float>(Arrays.asList(1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f)),
-				new ArrayList<Float>(Arrays.asList(2f, 2f, 2f, 2f, 2f, 2f, 2f, 2f, 2f, 2f, 2f)),
-				new ArrayList<Float>(Arrays.asList(8f, 8f, 8f, 8f, 8f, 8f, 8f, 8f, 8f, 8f, 8f)),
-				new ArrayList<Float>(Arrays.asList(8f, 5f, 9f, 10f, 5f, 7f, 2f, 3f, 8f, 1f, 5f))
-				);
+		sample = new ArrayList<Float>(Arrays.asList(1f, 2f, 3f, 4f, 5f, 6f, 7f, 8f, 9f, 10f, 9f));
 		
 		//2. Initialize K to your chosen number of neighbors
 		int k = 5/*(int) Math.round(Math.sqrt(data.size()))*/;
 		
-		for(ArrayList<Float> sampleData : samples) {
-			System.out.println("The new item belongs to the class " + knn(data, sampleData, k) + ", with a k=" + k + ".");	
-		}
+		System.out.println("The new item belongs to the class " + knn(data, sample, k) + ", with a k=" + k + ".");
 	}
 	
 	public static Float knn(ArrayList<ArrayList<Float>> sample, ArrayList<Float> newSample, int k) {

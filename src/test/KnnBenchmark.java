@@ -29,34 +29,21 @@ import serial.KNearestNeighbors;
 @OutputTimeUnit(TimeUnit.SECONDS)
 @Fork(1)
 public class KnnBenchmark {
-	static ArrayList<ArrayList<Float>> data;
-	static ArrayList<ArrayList<Float>> samples = new ArrayList<ArrayList<Float>>();
+	static ArrayList<Float> sample;
 	static int k = 0; 
 	
 	@Setup
 	public static final void setup() throws IOException {
-		data = DatasetReader.loadData();
-		Collections.addAll(samples, 
-				new ArrayList<Float>(Arrays.asList(1f, 2f, 3f, 4f, 5f, 6f, 7f, 8f, 9f, 10f, 9f))/*,
-				new ArrayList<Float>(Arrays.asList(1f, 1f, 3f, 3f, 5f, 5f, 7f, 7f, 9f, 9f, 10f)),
-				new ArrayList<Float>(Arrays.asList(1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f)),
-				new ArrayList<Float>(Arrays.asList(2f, 2f, 2f, 2f, 2f, 2f, 2f, 2f, 2f, 2f, 2f)),
-				new ArrayList<Float>(Arrays.asList(8f, 8f, 8f, 8f, 8f, 8f, 8f, 8f, 8f, 8f, 8f)),
-				new ArrayList<Float>(Arrays.asList(8f, 5f, 9f, 10f, 5f, 7f, 2f, 3f, 8f, 1f, 5f))*/
-				);
-		
+		sample = new ArrayList<Float>(Arrays.asList(1f, 2f, 3f, 4f, 5f, 6f, 7f, 8f, 9f, 10f, 9f));
 		k = 5/*(int) Math.round(Math.sqrt(data.size()))*/;
 		System.out.println("Setup Complete");
 	}
 	
 	@Benchmark
-	public Float testKnn() throws IOException {
+	public void testKnn() throws IOException {
 		System.out.println("SERIAL JMH KNN TEST");
-		for(ArrayList<Float> sampleData : samples) {
-			Float result = KNearestNeighbors.knn(data, sampleData, k);
-			System.out.println("The new item belongs to the class " + result + ", with a k=" + k + ".");
-		}
-		return 0f;
+		ArrayList<ArrayList<Float>> data = DatasetReader.loadData();
+		KNearestNeighbors.knn(data, sample, k);
 	}	
 }
 
