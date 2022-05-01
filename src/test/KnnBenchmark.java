@@ -35,7 +35,7 @@ public class KnnBenchmark {
 	@Setup
 	public static final void setup() throws IOException {
 		sample = new ArrayList<Float>(Arrays.asList(1f, 2f, 3f, 4f, 5f, 6f, 7f, 8f, 9f, 10f, 9f));
-		k = 5/*(int) Math.round(Math.sqrt(data.size()))*/;
+		k = 5;
 		System.out.println("Setup Complete");
 	}
 	
