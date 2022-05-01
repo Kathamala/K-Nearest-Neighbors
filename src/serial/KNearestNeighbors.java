@@ -26,19 +26,20 @@ public class KNearestNeighbors {
 	
 	public static void main(String[] args) throws IOException {	
 		System.out.println("SERIAL");
-		ArrayList<ArrayList<Float>> data = DatasetReader.loadData();
+		
 		ArrayList<Float> sample;
 
 		sample = new ArrayList<Float>(Arrays.asList(1f, 2f, 3f, 4f, 5f, 6f, 7f, 8f, 9f, 10f, 9f));
 		
 		int k = 5;
 		
-		System.out.println("The new item belongs to the class " + knn(data, sample, k) + ", with a k=" + k + ".");
+		System.out.println("The new item belongs to the class " + knn(sample, k) + ", with a k=" + k + ".");
 	}
 	
-	public static Float knn(ArrayList<ArrayList<Float>> sample, ArrayList<Float> newSample, int k) {
+	public static Float knn(ArrayList<Float> newSample, int k) throws IOException {
+		ArrayList<ArrayList<Float>> data = DatasetReader.loadData();
 		
-		List<Item> distances = calculateDistances(sample, newSample);
+		List<Item> distances = calculateDistances(data, newSample);
 		
 		distances.sort(new ItemComparator());
 		

@@ -42,8 +42,7 @@ public class KnnBenchmark {
 	@Benchmark
 	public void testKnn() throws IOException {
 		System.out.println("SERIAL JMH KNN TEST");
-		ArrayList<ArrayList<Float>> data = DatasetReader.loadData();
-		KNearestNeighbors.knn(data, sample, k);
+		KNearestNeighbors.knn(sample, k);
 	}	
 }
 
