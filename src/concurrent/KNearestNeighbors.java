@@ -7,7 +7,7 @@ import java.util.List;
 
 public class KNearestNeighbors {
 	int count = 0;
-	public int k = 0;
+	public int k = 5;
 	static final int NUMBER_OF_THREADS = 8;	
 	
 	public ArrayList<ArrayList<Float>> data;
@@ -17,7 +17,6 @@ public class KNearestNeighbors {
 	public void startKnn(ArrayList<Float> _newData) throws IOException {
 		data = DatasetReader.loadData();
 		newData = _newData;
-		k = 5;
 		
 		for (int i = 0; i < NUMBER_OF_THREADS; i++) {
 			ThreadUnity tu = new ThreadUnity(this);
@@ -34,7 +33,7 @@ public class KNearestNeighbors {
 		distances.add(item);
 	}	
 	
-	public Float findClass() {	
+	private Float findClass() {	
 		distances.sort(new ItemComparator());
 		
 		List<Float> classes = new ArrayList<Float>();
@@ -48,7 +47,7 @@ public class KNearestNeighbors {
 		return mostCommonElement;
 	}
 	
-	private static Float mostCommon(List<Float> values) {
+	private Float mostCommon(List<Float> values) {
 		if(values == null || values.size() == 0) {
 			return 0f;
 		}
