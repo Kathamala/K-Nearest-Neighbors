@@ -29,16 +29,14 @@ import concurrent.KNearestNeighbors;
 @OutputTimeUnit(TimeUnit.SECONDS)
 @Fork(1)
 public class KnnBenchmark {
-	//static ArrayList<ArrayList<Float>> data;
 	static ArrayList<Float> sample;
 	static int k = 0; 
 	
 	@Setup
 	public static final void setup() throws IOException {
-		//data = DatasetReader.loadData();
 		sample = new ArrayList<Float>(Arrays.asList(1f, 2f, 3f, 4f, 5f, 6f, 7f, 8f, 9f, 10f, 9f));
 		
-		k = 5/*(int) Math.round(Math.sqrt(data.size()))*/;
+		k = 5;
 		System.out.println("Setup Complete");
 	}
 	
@@ -47,12 +45,6 @@ public class KnnBenchmark {
 		System.out.println("CONCURRENT JMH KNN TEST");
 		KNearestNeighbors knn = new KNearestNeighbors();
 		knn.startKnn(sample);
-		
-		/*
-		for(ArrayList<Float> sampleData : samples) {
-			KNearestNeighbors knn = new KNearestNeighbors();
-			knn.startKnn(sampleData);
-		}*/
 	}	
 }
 

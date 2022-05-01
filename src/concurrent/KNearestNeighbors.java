@@ -13,13 +13,11 @@ public class KNearestNeighbors {
 	public ArrayList<ArrayList<Float>> data;
 	public ArrayList<Float> newData = new ArrayList<Float>();
 	public List<Item> distances = new ArrayList<Item>();
-	
+
 	public void startKnn(ArrayList<Float> _newData) throws IOException {
-		//1. Load the data (Value, Class). The class must be the final value.
 		data = DatasetReader.loadData();
 		newData = _newData;
-		//2. Initialize K to your chosen number of neighbors
-		k = 5/*(int) Math.round(Math.sqrt(data.size()))*/;
+		k = 5;
 		
 		for (int i = 0; i < NUMBER_OF_THREADS; i++) {
 			ThreadUnity tu = new ThreadUnity(this);
@@ -37,20 +35,14 @@ public class KNearestNeighbors {
 	}	
 	
 	public Float findClass() {	
-		//4. Sort the ordered collection of distances and indices from smallest to largest (in ascending order) by the distances.
 		distances.sort(new ItemComparator());
 		
 		List<Float> classes = new ArrayList<Float>();
 			
-		//5. Pick the first K entries from the sorted collection.
 		for(int i=0; i<k; i++) {
-			//6. Get the labels of the selected K entries.
 			classes.add(distances.get(i).classValue);
 		}
-
-		//7. If regression, return the mean of the K labels
 		
-		//8. If classification, return the most common value of the K labels.
 		Float mostCommonElement = mostCommon(classes);
 		System.out.println("The new item belongs to the class " + mostCommonElement + ", with a k=" + k + ".");
 		return mostCommonElement;
