@@ -24,8 +24,8 @@ import concurrent.KNearestNeighbors;
 
 @State(Scope.Benchmark)
 @BenchmarkMode(Mode.Throughput)
-@Warmup(iterations = 3, time = 1, timeUnit = TimeUnit.SECONDS)
-@Measurement(iterations = 5, time = 1, timeUnit = TimeUnit.SECONDS)
+@Warmup(iterations = 8, time = 1, timeUnit = TimeUnit.SECONDS)
+@Measurement(iterations = 8, time = 1, timeUnit = TimeUnit.SECONDS)
 @OutputTimeUnit(TimeUnit.SECONDS)
 @Fork(1)
 public class KnnBenchmark {
