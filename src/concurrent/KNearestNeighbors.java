@@ -8,7 +8,7 @@ import java.util.List;
 public class KNearestNeighbors {
 	int count = 0;
 	public int k = 5;
-	static final int NUMBER_OF_THREADS = 8;	
+	static final int NUMBER_OF_THREADS = Runtime.getRuntime().availableProcessors();	
 	
 	public ArrayList<ArrayList<Float>> data;
 	public ArrayList<Float> newData = new ArrayList<Float>();
