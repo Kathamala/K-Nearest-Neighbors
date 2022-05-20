@@ -24,13 +24,14 @@ public class KNearestNeighbors {
 		}		
 	}
 
-	public synchronized int getNext() {
-		if(count+1 == data.size()) findClass();
+	public synchronized int getNext(boolean findClass) {
+		if(findClass && count+1 == data.size()) findClass();
 		return count++;
 	}
 	
-	public synchronized void addDistance(Item item) {
+	public synchronized Item addDistance(Item item) {
 		distances.add(item);
+		return item;
 	}	
 	
 	private Float findClass() {	

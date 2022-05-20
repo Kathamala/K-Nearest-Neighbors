@@ -1,4 +1,4 @@
-package test;
+package JMHtests;
 
 import java.io.IOException;
 import java.util.ArrayList;

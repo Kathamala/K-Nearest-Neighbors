@@ -1,4 +1,4 @@
-package test;
+package JMHtests;
 
 import org.openjdk.jmh.profile.GCProfiler;
 import org.openjdk.jmh.profile.StackProfiler;
