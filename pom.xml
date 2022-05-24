@@ -24,6 +24,16 @@
     </plugins>
   </build>
  <dependencies>
+	<dependency>
+		<groupId>org.apache.jmeter</groupId>
+		<artifactId>ApacheJMeter_core</artifactId>
+		<version>5.1</version>
+	</dependency>
+	<dependency>
+		<groupId>org.apache.jmeter</groupId>
+		<artifactId>ApacheJMeter_java</artifactId>
+		<version>5.1</version>
+	</dependency> 
 	 <dependency>
 	    <groupId>org.openjdk.jcstress</groupId>
 	    <artifactId>jcstress-core</artifactId>
@@ -40,4 +50,8 @@
 	    <version>1.35</version>
 	</dependency>
   </dependencies>  
+	<properties>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+	</properties>   
 </project>

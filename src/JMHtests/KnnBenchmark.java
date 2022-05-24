@@ -3,8 +3,6 @@ package JMHtests;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import org.openjdk.jmh.annotations.Benchmark;
@@ -17,9 +15,7 @@ import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.annotations.Setup;
 import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.annotations.Warmup;
-import org.openjdk.jmh.infra.Blackhole;
 
-import concurrent.DatasetReader;
 import concurrent.KNearestNeighbors;
 
 @State(Scope.Benchmark)
@@ -41,7 +37,7 @@ public class KnnBenchmark {
 	}
 	
 	@Benchmark
-	public void testKnnConcurrent() throws IOException {
+	public void testKnnConcurrent() throws IOException, InterruptedException {
 		System.out.println("CONCURRENT JMH KNN TEST");
 		KNearestNeighbors knn = new KNearestNeighbors();
 		knn.startKnn(sample);

@@ -1,9 +1,5 @@
 package JCStressTests;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import org.openjdk.jcstress.annotations.Actor;
 import org.openjdk.jcstress.annotations.Expect;
 import org.openjdk.jcstress.annotations.JCStressTest;
@@ -24,12 +20,12 @@ public class JCSTests {
 	public static class GetNextTest {		
 		@Actor
 		public void actor1(KnnState knnState, II_Result r) {
-			r.r1 = knnState.getNext(false);
+			r.r1 = knnState.getNext();
 		}
 		
 		@Actor
 		public void actor2(KnnState knnState, II_Result r) {
-			r.r2 = knnState.getNext(false);
+			r.r2 = knnState.getNext();
 		}
 	}
 	

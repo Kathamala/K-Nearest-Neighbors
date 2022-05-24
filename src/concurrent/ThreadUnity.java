@@ -9,7 +9,7 @@ public class ThreadUnity extends Thread {
 	}
 	
 	public void run() {	
-		int next = knn.getNext(true);
+		int next = knn.getNext();
 
 		do {
 			Float distance = 0f;
@@ -19,7 +19,7 @@ public class ThreadUnity extends Thread {
 			
 			knn.addDistance(new Item(distance, knn.data.get(next).get(knn.data.get(next).size()-1)));
 			
-			next = knn.getNext(true);
+			next = knn.getNext();
 		}
 		while(next < knn.data.size());
 	}

@@ -13,19 +13,27 @@ public class KNearestNeighbors {
 	public ArrayList<ArrayList<Float>> data;
 	public ArrayList<Float> newData = new ArrayList<Float>();
 	public List<Item> distances = new ArrayList<Item>();
+	
+	public ArrayList<ThreadUnity> threads = new ArrayList<ThreadUnity>();
 
-	public void startKnn(ArrayList<Float> _newData) throws IOException {
+	public void startKnn(ArrayList<Float> _newData) throws IOException, InterruptedException {
 		data = DatasetReader.loadData();
 		newData = _newData;
 		
 		for (int i = 0; i < NUMBER_OF_THREADS; i++) {
 			ThreadUnity tu = new ThreadUnity(this);
 			tu.start();
+			threads.add(tu);
+		}
+		
+		for (int i = 0; i < NUMBER_OF_THREADS; i++) {
+			threads.get(i).join();
 		}		
+		
+		findClass();
 	}
 
-	public synchronized int getNext(boolean findClass) {
-		if(findClass && count+1 == data.size()) findClass();
+	public synchronized int getNext() {
 		return count++;
 	}
 	
