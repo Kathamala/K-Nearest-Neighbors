@@ -16,8 +16,9 @@ public class KNearestNeighbors {
 	
 	public ArrayList<ThreadUnity> threads = new ArrayList<ThreadUnity>();
 
-	public void startKnn(ArrayList<Float> _newData) throws IOException, InterruptedException {
-		data = DatasetReader.loadData();
+	public void startKnn(ArrayList<Float> _newData, ArrayList<ArrayList<Float>> _data) throws IOException, InterruptedException {
+		//data = DatasetReader.loadData();
+		data = _data;
 		newData = _newData;
 		
 		for (int i = 0; i < NUMBER_OF_THREADS; i++) {

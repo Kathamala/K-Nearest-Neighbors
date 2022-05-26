@@ -16,6 +16,7 @@ import org.openjdk.jmh.annotations.Setup;
 import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.annotations.Warmup;
 
+import concurrent.DatasetReader;
 import concurrent.KNearestNeighbors;
 
 @State(Scope.Benchmark)
@@ -26,12 +27,13 @@ import concurrent.KNearestNeighbors;
 @Fork(1)
 public class KnnBenchmark {
 	static ArrayList<Float> sample;
+	static ArrayList<ArrayList<Float>> data;
 	static int k = 0; 
 	
 	@Setup
 	public static final void setup() throws IOException {
 		sample = new ArrayList<Float>(Arrays.asList(1f, 2f, 3f, 4f, 5f, 6f, 7f, 8f, 9f, 10f, 9f));
-		
+		data = DatasetReader.loadData("src\\dataset\\dataset.json");
 		k = 5;
 		System.out.println("Setup Complete");
 	}
@@ -40,7 +42,7 @@ public class KnnBenchmark {
 	public void testKnnConcurrent() throws IOException, InterruptedException {
 		System.out.println("CONCURRENT JMH KNN TEST");
 		KNearestNeighbors knn = new KNearestNeighbors();
-		knn.startKnn(sample);
+		knn.startKnn(sample, data);
 	}	
 }
 

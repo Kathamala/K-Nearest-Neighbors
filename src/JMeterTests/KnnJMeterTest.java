@@ -9,6 +9,7 @@ import org.apache.jmeter.protocol.java.sampler.AbstractJavaSamplerClient;
 import org.apache.jmeter.protocol.java.sampler.JavaSamplerContext;
 import org.apache.jmeter.samplers.SampleResult;
 
+import concurrent.DatasetReader;
 import concurrent.KNearestNeighbors;
 
 public class KnnJMeterTest extends AbstractJavaSamplerClient implements Serializable{
@@ -22,8 +23,21 @@ public class KnnJMeterTest extends AbstractJavaSamplerClient implements Serializ
 		
 		ArrayList<Float> newData = new ArrayList<Float>(Arrays.asList(8f, 5f, 9f, 10f, 5f, 7f, 2f, 3f, 8f, 1f, 5f));
 		KNearestNeighbors knn = new KNearestNeighbors();
+		ArrayList<ArrayList<Float>> data;
+		
 		try {
-			knn.startKnn(newData);
+			data = DatasetReader.loadData("D:\\thiag\\Documents\\2022.1\\Programação Concorrente\\Eclipse\\K-Nearest Neighbors\\src\\dataset\\dataset.json");
+		} catch (IOException e) {
+			result.sampleEnd();
+			result.setResponseCode("500");
+			result.setResponseMessage(e.getMessage());
+			result.setSuccessful(false);
+			
+			return result;
+		}
+		
+		try {
+			knn.startKnn(newData, data);
 		} catch (IOException e) {
 			result.sampleEnd();
 			result.setResponseCode("500");
