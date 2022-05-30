@@ -33,12 +33,10 @@ public class KNearestNeighbors {
 		
 		int k = 5;
 		
-		System.out.println("The new item belongs to the class " + knn(sample, k) + ", with a k=" + k + ".");
+		System.out.println("The new item belongs to the class " + knn(sample, DatasetReader.loadData("src\\dataset\\dataset.json"), k) + ", with a k=" + k + ".");
 	}
 	
-	public static Float knn(ArrayList<Float> newSample, int k) throws IOException {
-		ArrayList<ArrayList<Float>> data = DatasetReader.loadData();
-		
+	public static Float knn(ArrayList<Float> newSample, ArrayList<ArrayList<Float>> data,  int k) throws IOException {		
 		List<Item> distances = calculateDistances(data, newSample);
 		
 		distances.sort(new ItemComparator());

@@ -1,4 +1,4 @@
-package test;
+package JMHTests;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -31,10 +31,12 @@ import serial.KNearestNeighbors;
 public class KnnBenchmark {
 	static ArrayList<Float> sample;
 	static int k = 0; 
+	static ArrayList<ArrayList<Float>> data;
 	
 	@Setup
 	public static final void setup() throws IOException {
 		sample = new ArrayList<Float>(Arrays.asList(1f, 2f, 3f, 4f, 5f, 6f, 7f, 8f, 9f, 10f, 9f));
+		data = DatasetReader.loadData("src\\dataset\\dataset.json");
 		k = 5;
 		System.out.println("Setup Complete");
 	}
@@ -42,7 +44,7 @@ public class KnnBenchmark {
 	@Benchmark
 	public void testKnn() throws IOException {
 		System.out.println("SERIAL JMH KNN TEST");
-		KNearestNeighbors.knn(sample, k);
+		KNearestNeighbors.knn(sample, data, k);
 	}	
 }
 
