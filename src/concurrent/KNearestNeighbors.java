@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class KNearestNeighbors {
 	int count = 0;
@@ -21,6 +24,23 @@ public class KNearestNeighbors {
 		data = _data;
 		newData = _newData;
 		
+		ExecutorService executorService = Executors.newFixedThreadPool(NUMBER_OF_THREADS); 
+		
+		for (int i = 0; i < NUMBER_OF_THREADS; i++) {
+			ThreadUnity tu = new ThreadUnity(this);
+			executorService.execute(tu);
+		}
+		
+		executorService.shutdown();
+		
+		try {
+			executorService.awaitTermination(60, TimeUnit.SECONDS);
+		}
+		catch(InterruptedException e) {
+			e.printStackTrace();
+		}	
+		
+		/*
 		for (int i = 0; i < NUMBER_OF_THREADS; i++) {
 			ThreadUnity tu = new ThreadUnity(this);
 			tu.start();
@@ -29,7 +49,8 @@ public class KNearestNeighbors {
 		
 		for (int i = 0; i < NUMBER_OF_THREADS; i++) {
 			threads.get(i).join();
-		}		
+		}	
+		*/	
 		
 		findClass();
 	}

@@ -1,6 +1,6 @@
 package concurrent;
 
-public class ThreadUnity extends Thread {
+public class ThreadUnity implements Runnable {
 	
 	KNearestNeighbors knn;
 	
