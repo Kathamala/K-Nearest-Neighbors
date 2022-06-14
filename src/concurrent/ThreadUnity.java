@@ -17,7 +17,7 @@ public class ThreadUnity implements Runnable {
 				distance = (float) (distance + Math.pow((knn.data.get(next).get(j) - knn.newData.get(j)), 2));
 			}
 			
-			knn.addDistance(new Item(distance, knn.data.get(next).get(knn.data.get(next).size()-1)));
+			knn.addDistance(next, new Item(distance, knn.data.get(next).get(knn.data.get(next).size()-1)));
 			
 			next = knn.getNext();
 		}

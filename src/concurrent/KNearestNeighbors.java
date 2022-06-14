@@ -7,21 +7,25 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReferenceArray;
 
 public class KNearestNeighbors {
-	int count = 0;
+	AtomicInteger count = new AtomicInteger(0);
+	//int count = 0;
 	public int k = 5;
 	static final int NUMBER_OF_THREADS = Runtime.getRuntime().availableProcessors();	
 	
 	public ArrayList<ArrayList<Float>> data;
 	public ArrayList<Float> newData = new ArrayList<Float>();
-	public List<Item> distances = new ArrayList<Item>();
-	
+	//public List<Item> distances = new ArrayList<Item>();
+	public AtomicReferenceArray<Item> distances;
+		
 	public ArrayList<ThreadUnity> threads = new ArrayList<ThreadUnity>();
 
 	public void startKnn(ArrayList<Float> _newData, ArrayList<ArrayList<Float>> _data) throws IOException, InterruptedException {
-		//data = DatasetReader.loadData();
 		data = _data;
+		distances = new AtomicReferenceArray<Item>(data.size());
 		newData = _newData;
 		
 		ExecutorService executorService = Executors.newFixedThreadPool(NUMBER_OF_THREADS); 
@@ -40,37 +44,33 @@ public class KNearestNeighbors {
 			e.printStackTrace();
 		}	
 		
-		/*
-		for (int i = 0; i < NUMBER_OF_THREADS; i++) {
-			ThreadUnity tu = new ThreadUnity(this);
-			tu.start();
-			threads.add(tu);
-		}
-		
-		for (int i = 0; i < NUMBER_OF_THREADS; i++) {
-			threads.get(i).join();
-		}	
-		*/	
-		
 		findClass();
 	}
 
-	public synchronized int getNext() {
-		return count++;
+	public int getNext() {
+		return count.getAndIncrement();
 	}
 	
-	public synchronized Item addDistance(Item item) {
-		distances.add(item);
+	public Item addDistance(int position, Item item) {
+		//distances.add(item);
+		//return item;
+		distances.set(position, item);
 		return item;
 	}	
 	
-	private Float findClass() {	
-		distances.sort(new ItemComparator());
+	private Float findClass() {		
+		ArrayList<Item> distancesAL = new ArrayList<Item>();
+		
+		for(int i=0; i<distances.length(); i++) {
+			if(distances.get(i) != null) distancesAL.add(distances.get(i));
+		}
+		
+		distancesAL.sort(new ItemComparator());
 		
 		List<Float> classes = new ArrayList<Float>();
 			
 		for(int i=0; i<k; i++) {
-			classes.add(distances.get(i).classValue);
+			classes.add(distancesAL.get(i).classValue);
 		}
 		
 		Float mostCommonElement = mostCommon(classes);

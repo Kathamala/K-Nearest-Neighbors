@@ -1,5 +1,7 @@
 package JCStressTests;
 
+import java.util.concurrent.atomic.AtomicReferenceArray;
+
 import org.openjdk.jcstress.annotations.Actor;
 import org.openjdk.jcstress.annotations.Expect;
 import org.openjdk.jcstress.annotations.JCStressTest;
@@ -12,7 +14,7 @@ import concurrent.KNearestNeighbors;
 
 public class JCSTests {
 	@State
-	public static class KnnState extends KNearestNeighbors{	}
+	public static class KnnState extends KNearestNeighbors{ }
 	
 	@JCStressTest
 	@Outcome(id="0, 1", expect=Expect.ACCEPTABLE, desc="get back 0-1")
@@ -36,13 +38,15 @@ public class JCSTests {
 		@Actor
 		public void actor1(KnnState knnState, II_Result r) {
 			Item i = new Item(10f, 0f);
-			r.r1 = Math.round(knnState.addDistance(i).classValue);
+			if(knnState.distances == null) knnState.distances = new AtomicReferenceArray<Item>(2);
+			r.r1 = Math.round(knnState.addDistance(0, i).classValue);
 		}
 		
 		@Actor
 		public void actor2(KnnState knnState, II_Result r) {
 			Item i = new Item(12f, 1f);
-			r.r2 = Math.round(knnState.addDistance(i).classValue);
+			if(knnState.distances == null) knnState.distances = new AtomicReferenceArray<Item>(2);
+			r.r2 = Math.round(knnState.addDistance(1, i).classValue);
 		}
 	}	
 }
