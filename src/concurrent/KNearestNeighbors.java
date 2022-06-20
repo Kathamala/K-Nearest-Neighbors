@@ -6,28 +6,35 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReferenceArray;
 
 public class KNearestNeighbors {
 	AtomicInteger count = new AtomicInteger(0);
-	//int count = 0;
 	public int k = 5;
-	static final int NUMBER_OF_THREADS = Runtime.getRuntime().availableProcessors();	
+	//static final int NUMBER_OF_THREADS = Runtime.getRuntime().availableProcessors();	
 	
 	public ArrayList<ArrayList<Float>> data;
 	public ArrayList<Float> newData = new ArrayList<Float>();
-	//public List<Item> distances = new ArrayList<Item>();
 	public AtomicReferenceArray<Item> distances;
-		
-	public ArrayList<ThreadUnity> threads = new ArrayList<ThreadUnity>();
+	static final int NUMBER_OF_THREADS = Runtime.getRuntime().availableProcessors();
+	
+	//public ArrayList<ThreadUnity> threads = new ArrayList<ThreadUnity>();
 
 	public void startKnn(ArrayList<Float> _newData, ArrayList<ArrayList<Float>> _data) throws IOException, InterruptedException {
 		data = _data;
 		distances = new AtomicReferenceArray<Item>(data.size());
 		newData = _newData;
 		
+		int sequential_threshold = data.size() / NUMBER_OF_THREADS;
+		
+		ForkJoinPool pool = new ForkJoinPool();
+		ForkJoinThreadUnity task = new ForkJoinThreadUnity(data, this, sequential_threshold);
+		pool.invoke(task);
+
+		/*
 		ExecutorService executorService = Executors.newFixedThreadPool(NUMBER_OF_THREADS); 
 		
 		for (int i = 0; i < NUMBER_OF_THREADS; i++) {
@@ -43,21 +50,21 @@ public class KNearestNeighbors {
 		catch(InterruptedException e) {
 			e.printStackTrace();
 		}	
+		*/
 		
 		findClass();
 	}
-
-	public int getNext() {
+	
+	
+ 	public int getNext() {
 		return count.getAndIncrement();
 	}
 	
-	public Item addDistance(int position, Item item) {
-		//distances.add(item);
-		//return item;
-		distances.set(position, item);
+	public Item addDistance(Item item) {
+		distances.set(getNext(), item);
 		return item;
 	}	
-	
+
 	private Float findClass() {		
 		ArrayList<Item> distancesAL = new ArrayList<Item>();
 		

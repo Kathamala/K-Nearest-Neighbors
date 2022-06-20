@@ -39,16 +39,16 @@ public class JCSTests {
 		public void actor1(KnnState knnState, II_Result r) {
 			Item i = new Item(10f, 0f);
 			if(knnState.distances == null) knnState.distances = new AtomicReferenceArray<Item>(2);
-			r.r1 = Math.round(knnState.addDistance(0, i).classValue);
+			r.r1 = Math.round(knnState.addDistance(i).classValue);
 		}
 		
 		@Actor
 		public void actor2(KnnState knnState, II_Result r) {
 			Item i = new Item(12f, 1f);
 			if(knnState.distances == null) knnState.distances = new AtomicReferenceArray<Item>(2);
-			r.r2 = Math.round(knnState.addDistance(1, i).classValue);
+			r.r2 = Math.round(knnState.addDistance(i).classValue);
 		}
-	}	
+	}
 }
 
 
