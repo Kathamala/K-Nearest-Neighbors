@@ -3,22 +3,25 @@ package concurrent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReferenceArray;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class KNearestNeighbors {
 	AtomicInteger count = new AtomicInteger(0);
-	//int count = 0;
 	public int k = 5;
 	static final int NUMBER_OF_THREADS = Runtime.getRuntime().availableProcessors();	
 	
 	public ArrayList<ArrayList<Float>> data;
 	public ArrayList<Float> newData = new ArrayList<Float>();
-	//public List<Item> distances = new ArrayList<Item>();
 	public AtomicReferenceArray<Item> distances;
 		
 	public ArrayList<ThreadUnity> threads = new ArrayList<ThreadUnity>();
@@ -52,8 +55,6 @@ public class KNearestNeighbors {
 	}
 	
 	public Item addDistance(int position, Item item) {
-		//distances.add(item);
-		//return item;
 		distances.set(position, item);
 		return item;
 	}	
@@ -65,6 +66,7 @@ public class KNearestNeighbors {
 			if(distances.get(i) != null) distancesAL.add(distances.get(i));
 		}
 		
+		/*
 		distancesAL.sort(new ItemComparator());
 		
 		List<Float> classes = new ArrayList<Float>();
@@ -72,18 +74,37 @@ public class KNearestNeighbors {
 		for(int i=0; i<k; i++) {
 			classes.add(distancesAL.get(i).classValue);
 		}
+		*/
 		
-		Float mostCommonElement = mostCommon(classes);
+		List<Float> classes = new ArrayList<Float>();
+		
+		distancesAL.parallelStream().sorted(new ItemComparator()).limit(k).forEach(e -> {classes.add(e.classValue);});
+		
+		
+		
+		
+		//Float mostCommonElement = mostCommon(classes);
+		
+		Float mostCommonElement = classes.parallelStream()
+				.collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+				.entrySet()
+				.stream()
+				.max(Comparator.comparing(Entry::getValue))
+				.get()
+				.getKey();
+		 
+		
 		System.out.println("The new item belongs to the class " + mostCommonElement + ", with a k=" + k + ".");
 		return mostCommonElement;
 	}
-	
+
+	/*
 	private Float mostCommon(List<Float> values) {
 		if(values == null || values.size() == 0) {
 			return 0f;
 		}
 		
-		Collections.sort(values);
+		Collections.sort(values);		
 		
 		Float res = values.get(0);
 		int max_count = 1;
@@ -111,5 +132,5 @@ public class KNearestNeighbors {
         }        
 		
         return res;
-	}		
+	}	*/	
 }
