@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.concurrent.ExecutionException;
 
 import org.apache.jmeter.protocol.java.sampler.AbstractJavaSamplerClient;
 import org.apache.jmeter.protocol.java.sampler.JavaSamplerContext;
@@ -46,6 +47,14 @@ public class KnnJMeterTest extends AbstractJavaSamplerClient implements Serializ
 			
 			return result;
 		} catch (InterruptedException e) {
+			result.sampleEnd();
+			result.setResponseCode("500");
+			result.setResponseMessage(e.getMessage());
+			result.setSuccessful(false);
+			
+			return result;
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
 			result.sampleEnd();
 			result.setResponseCode("500");
 			result.setResponseMessage(e.getMessage());

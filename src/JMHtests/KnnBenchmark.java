@@ -3,6 +3,7 @@ package JMHtests;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 import org.openjdk.jmh.annotations.Benchmark;
@@ -39,7 +40,7 @@ public class KnnBenchmark {
 	}
 	
 	@Benchmark
-	public void testKnnConcurrent() throws IOException, InterruptedException {
+	public void testKnnConcurrent() throws IOException, InterruptedException, ExecutionException {
 		System.out.println("CONCURRENT JMH KNN TEST");
 		KNearestNeighbors knn = new KNearestNeighbors();
 		knn.startKnn(sample, data);

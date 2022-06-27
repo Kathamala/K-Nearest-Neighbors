@@ -2,14 +2,11 @@ package concurrent;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReferenceArray;
 import java.util.function.Function;
@@ -23,21 +20,21 @@ public class KNearestNeighbors {
 	public ArrayList<ArrayList<Float>> data;
 	public ArrayList<Float> newData = new ArrayList<Float>();
 	public AtomicReferenceArray<Item> distances;
-		
-	public ArrayList<ThreadUnity> threads = new ArrayList<ThreadUnity>();
 
-	public void startKnn(ArrayList<Float> _newData, ArrayList<ArrayList<Float>> _data) throws IOException, InterruptedException {
+	public Float startKnn(ArrayList<Float> _newData, ArrayList<ArrayList<Float>> _data) throws IOException, InterruptedException, ExecutionException {
 		data = _data;
 		distances = new AtomicReferenceArray<Item>(data.size());
 		newData = _newData;
 		
-		ExecutorService executorService = Executors.newFixedThreadPool(NUMBER_OF_THREADS); 
+		//ExecutorService executorService = Executors.newFixedThreadPool(NUMBER_OF_THREADS); 
 		
 		for (int i = 0; i < NUMBER_OF_THREADS; i++) {
 			ThreadUnity tu = new ThreadUnity(this);
-			executorService.execute(tu);
+			CompletableFuture.runAsync(tu);
+			//executorService.execute(tu);
 		}
 		
+		/*
 		executorService.shutdown();
 		
 		try {
@@ -45,9 +42,10 @@ public class KNearestNeighbors {
 		}
 		catch(InterruptedException e) {
 			e.printStackTrace();
-		}	
+		}	*/
+				
 		
-		findClass();
+		return findClass();
 	}
 
 	public int getNext() {
@@ -59,32 +57,25 @@ public class KNearestNeighbors {
 		return item;
 	}	
 	
-	private Float findClass() {		
+	private Float findClass() throws InterruptedException, ExecutionException {		
+		
+		CompletableFuture<ArrayList<Item>> distancesAL = toArrayListAsync();
+		
+		/*
 		ArrayList<Item> distancesAL = new ArrayList<Item>();
 		
 		for(int i=0; i<distances.length(); i++) {
 			if(distances.get(i) != null) distancesAL.add(distances.get(i));
 		}
-		
-		/*
-		distancesAL.sort(new ItemComparator());
-		
-		List<Float> classes = new ArrayList<Float>();
-			
-		for(int i=0; i<k; i++) {
-			classes.add(distancesAL.get(i).classValue);
-		}
 		*/
 		
 		List<Float> classes = new ArrayList<Float>();
 		
-		distancesAL.parallelStream().sorted(new ItemComparator()).limit(k).forEach(e -> {classes.add(e.classValue);});
+		distancesAL.get().parallelStream().sorted(new ItemComparator()).limit(k).forEach(e -> {classes.add(e.classValue);});
 		
+		CompletableFuture<Float> mostCommonFuture = getMostCommonAsync(classes);
 		
-		
-		
-		//Float mostCommonElement = mostCommon(classes);
-		
+		/*
 		Float mostCommonElement = classes.parallelStream()
 				.collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
 				.entrySet()
@@ -92,45 +83,53 @@ public class KNearestNeighbors {
 				.max(Comparator.comparing(Entry::getValue))
 				.get()
 				.getKey();
-		 
+		 */
 		
-		System.out.println("The new item belongs to the class " + mostCommonElement + ", with a k=" + k + ".");
-		return mostCommonElement;
+		return mostCommonFuture.get();
 	}
-
-	/*
-	private Float mostCommon(List<Float> values) {
-		if(values == null || values.size() == 0) {
-			return 0f;
+	
+	public CompletableFuture<ArrayList<Item>> toArrayListAsync(){
+		return CompletableFuture.supplyAsync(() -> toArrayList());	
+	}
+	
+	private ArrayList<Item> toArrayList() {
+		ArrayList<Item> distancesAL = new ArrayList<Item>();
+		
+		for(int i=0; i<distances.length(); i++) {
+			if(distances.get(i) != null) distancesAL.add(distances.get(i));
 		}
 		
-		Collections.sort(values);		
-		
-		Float res = values.get(0);
-		int max_count = 1;
-        int curr_count = 1;
-		
-        for (int i = 1; i < values.size(); i++)
-        {
-            if (values.get(i).equals(values.get(i-1)))
-                curr_count++;
-            else
-            {
-                if (curr_count > max_count)
-                {
-                    max_count = curr_count;
-                    res = values.get(i-1);
-                }
-                curr_count = 1;
-            }
-        }   
-        
-        if (curr_count > max_count)
-        {
-            max_count = curr_count;
-            res = values.get(values.size()-1);
-        }        
-		
-        return res;
-	}	*/	
+		return distancesAL;
+	}
+	
+	
+	
+	public CompletableFuture<Float> getMostCommonAsync(List<Float> classes){
+		return CompletableFuture.supplyAsync(() -> getMostCommon(classes));	
+	}
+	
+	private Float getMostCommon(List<Float> classes) {
+		return classes.parallelStream()
+				.collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+				.entrySet()
+				.stream()
+				.max(Comparator.comparing(Entry::getValue))
+				.get()
+				.getKey();
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
