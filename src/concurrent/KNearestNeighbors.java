@@ -14,16 +14,15 @@ public class KNearestNeighbors {
 	public ArrayList<Float> newData = new ArrayList<Float>();
 	public List<Item> distances = new ArrayList<Item>();
 	
-	public ArrayList<ThreadUnity> threads = new ArrayList<ThreadUnity>();
+	public ArrayList<Thread> threads = new ArrayList<Thread>();
 
+	@SuppressWarnings("preview")
 	public void startKnn(ArrayList<Float> _newData, ArrayList<ArrayList<Float>> _data) throws IOException, InterruptedException {
-		//data = DatasetReader.loadData();
 		data = _data;
 		newData = _newData;
 		
 		for (int i = 0; i < NUMBER_OF_THREADS; i++) {
-			ThreadUnity tu = new ThreadUnity(this);
-			tu.start();
+			Thread tu = Thread.startVirtualThread(new ThreadUnity(this));
 			threads.add(tu);
 		}
 		

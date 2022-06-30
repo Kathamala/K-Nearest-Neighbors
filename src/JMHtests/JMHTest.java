@@ -17,7 +17,7 @@ public class JMHTest {
 				.measurementIterations(8).forks(1)
 				.addProfiler(GCProfiler.class)
 				.addProfiler(StackProfiler.class)
-				.jvmArgs("-server", "-Xms2048m", "-Xmx2048m").build();
+				.jvmArgs("-server", "-Xms2048m", "-Xmx2048m", "--enable-preview").build();
 		
 		new Runner(opt).run();
 	}

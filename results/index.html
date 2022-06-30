@@ -25,12 +25,12 @@
 <table width="100%" cellspacing="20">
 <tr>
 <td>
-<p class="endResult passed">
-100%
+<p class="endResult failed">
+0%
 </p>
 <table width="100%" cellpadding="3" cellspacing="0">
-<tr><td width="100%" class="passedProgress">&nbsp;</td></tr>
-<tr><td nowrap><b>Overall pass rate:</b> 2/2&nbsp;</td></tr>
+<tr><td width="100%" class="failedProgress">&nbsp;</td></tr>
+<tr><td nowrap><b>Overall pass rate:</b> 0/2&nbsp;</td></tr>
 </table>
 <br>
 </td>
@@ -46,15 +46,15 @@
 </tr>
 <tr>
 <td nowrap>java.specification.version</td>
-<td nowrap>17</td>
+<td nowrap>19</td>
 </tr>
 <tr>
 <td nowrap>java.vendor</td>
-<td nowrap>Eclipse Adoptium</td>
+<td nowrap>Oracle Corporation</td>
 </tr>
 <tr>
 <td nowrap>java.version</td>
-<td nowrap>17.0.2</td>
+<td nowrap>19-loom</td>
 </tr>
 <tr>
 <td nowrap>java.vm.name</td>
@@ -62,11 +62,11 @@
 </tr>
 <tr>
 <td nowrap>java.vm.vendor</td>
-<td nowrap>Eclipse Adoptium</td>
+<td nowrap>Oracle Corporation</td>
 </tr>
 <tr>
 <td nowrap>java.vm.version</td>
-<td nowrap>17.0.2+8</td>
+<td nowrap>19-loom+6-625</td>
 </tr>
 <tr>
 <td nowrap>os.arch</td>
@@ -96,9 +96,23 @@ None!
 <h3>ERROR tests</h3>
 <p>Tests break for some reason, other than failing the assert. Correct implementations should have none.</p>
 <table cellspacing=0 cellpadding=3 width="100%">
+<tr class="cell2">
+<td>&nbsp;&nbsp;&nbsp;<a href="JCStressTests.JCSTests.AddDistanceTest.html">JCStressTests.JCSTests.AddDistanceTest</a></td>
+<td></td>
+<td class="failed">ERROR</td>
+<td class="failed"></td>
+<td class="failed"></td>
+<td class="failed">Timeout while running the test</td>
+</tr>
+<tr class="cell1">
+<td>&nbsp;&nbsp;&nbsp;<a href="JCStressTests.JCSTests.GetNextTest.html">JCStressTests.JCSTests.GetNextTest</a></td>
+<td></td>
+<td class="failed">ERROR</td>
+<td class="failed"></td>
+<td class="failed"></td>
+<td class="failed">Timeout while running the test</td>
+</tr>
 </table>
-None!
-<br>
 <br>
 <hr>
 <h3>INTERESTING tests</h3>
@@ -114,15 +128,19 @@ None!
 <table cellspacing=0 cellpadding=3 width="100%">
 <tr class="cell2">
 <td>&nbsp;&nbsp;&nbsp;<a href="JCStressTests.JCSTests.AddDistanceTest.html">JCStressTests.JCSTests.AddDistanceTest</a></td>
-<td>10<sup>8</sup></td><td class="passed">PASSED</td>
-<td class="interesting"></td>
-<td class="passed"></td>
+<td></td>
+<td class="failed">ERROR</td>
+<td class="failed"></td>
+<td class="failed"></td>
+<td class="failed">Timeout while running the test</td>
 </tr>
 <tr class="cell1">
 <td>&nbsp;&nbsp;&nbsp;<a href="JCStressTests.JCSTests.GetNextTest.html">JCStressTests.JCSTests.GetNextTest</a></td>
-<td>10<sup>8</sup></td><td class="passed">PASSED</td>
-<td class="interesting"></td>
-<td class="passed"></td>
+<td></td>
+<td class="failed">ERROR</td>
+<td class="failed"></td>
+<td class="failed"></td>
+<td class="failed">Timeout while running the test</td>
 </tr>
 </table>
 <br>
