@@ -1,5 +1,5 @@
 package JMeterTests;
-
+/*
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -62,4 +62,4 @@ public class KnnJMeterTest extends AbstractJavaSamplerClient implements Serializ
 		return result;
 	}
 
-}
+}*/

@@ -1,5 +1,5 @@
 package JMHtests;
-
+/*
 import org.openjdk.jmh.profile.GCProfiler;
 import org.openjdk.jmh.profile.StackProfiler;
 import org.openjdk.jmh.runner.Runner;
@@ -21,4 +21,4 @@ public class JMHTest {
 		
 		new Runner(opt).run();
 	}
-}
+}*/

@@ -1,5 +1,5 @@
 package JMHtests;
-
+/*
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -45,7 +45,7 @@ public class KnnBenchmark {
 		knn.startKnn(sample, data);
 	}	
 }
-
+*/
 
 
 

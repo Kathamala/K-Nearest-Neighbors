@@ -1,5 +1,5 @@
 package JCStressTests;
-
+/*
 import org.openjdk.jcstress.annotations.Actor;
 import org.openjdk.jcstress.annotations.Expect;
 import org.openjdk.jcstress.annotations.JCStressTest;
@@ -45,7 +45,7 @@ public class JCSTests {
 			r.r2 = Math.round(knnState.addDistance(i).classValue);
 		}
 	}	
-}
+}*/
 
 
 

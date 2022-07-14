@@ -1,5 +1,5 @@
 package concurrent;
-
+/*
 public class ThreadUnity extends Thread {
 	
 	KNearestNeighbors knn;
@@ -24,3 +24,4 @@ public class ThreadUnity extends Thread {
 		while(next < knn.data.size());
 	}
 }
+*/
