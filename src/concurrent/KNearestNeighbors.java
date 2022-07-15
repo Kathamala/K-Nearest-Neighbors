@@ -2,22 +2,22 @@ package concurrent;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map.Entry;
+import java.util.stream.Collectors;
 
-import org.apache.poi.util.SystemOutLogger;
 import org.apache.spark.SparkConf;
+import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
-import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
 import org.apache.spark.sql.types.DataTypes;
 import org.apache.spark.sql.types.StructField;
 import org.apache.spark.sql.types.StructType;
 
-import com.healthmarketscience.jackcess.DataType;
+import scala.Tuple2;
 
 public class KNearestNeighbors {
 	int count = 0;
@@ -26,9 +26,8 @@ public class KNearestNeighbors {
 	
 	public ArrayList<ArrayList<Float>> data;
 	public ArrayList<Float> newData = new ArrayList<Float>();
-	public List<Item> distances = new ArrayList<Item>();
 
-	public Float startKnn(ArrayList<Float> _newData) throws IOException, InterruptedException {
+	public Float startKnn(ArrayList<Float> _newData) throws IOException, InterruptedException {		
 		SparkSession spark = SparkSession
 				.builder()
 				.appName("knn")
@@ -98,68 +97,38 @@ public class KNearestNeighbors {
 						),
 		});
 		
-		Dataset<Row> df = spark.read().format("json")
+		JavaRDD<Row> items = spark.read().format("json")
 				.option("multiline", "true")
 				.schema(schema)
-				.load("src\\dataset\\dataset.json");
+				.load("src\\dataset\\dataset.json")
+				.toJavaRDD();
 		
-		df.createOrReplaceTempView("maindata");
-
-		List<Row> f = spark.sql("SELECT * FROM maindata").collectAsList();
-		
-		f.forEach(row -> {
+		JavaPairRDD<Float, Float> distances = items.mapToPair(item -> {
 			Float distance = 0f;
 			
-			for(int j=0; j<row.size()-1; j++) {
-				distance = (float) (distance + Math.pow((Float.parseFloat(row.getString(j)) - _newData.get(j)), 2));
+			for(int j=0; j<item.size()-1; j++) {
+				distance = (float) (distance + Math.pow((Float.parseFloat(item.getString(j)) - _newData.get(j)), 2));
 			}
 			
-			distances.add(new Item(distance, Float.parseFloat(row.getString(row.size()-1))));
+			return new Tuple2<Float, Float>(distance, Float.parseFloat(item.getString(item.size()-1)));
 		});
-			
-		distances.sort(new ItemComparator());
 		
-		List<Float> classes = new ArrayList<Float>();
+		JavaPairRDD<Float, Float> orderedDistances = distances.sortByKey(true);
 		
-		for(int i=0; i<k; i++) {
-			classes.add(distances.get(i).classValue);
-		}
-
-		return mostCommon(classes);
+		JavaRDD<Float> classes = orderedDistances.map(d -> {
+			return d._2();
+		});
+		
+		List<Float> results = classes.take(k);
+		
+		Float result = results.stream()
+			.collect(Collectors.groupingBy(x -> x, Collectors.counting()))
+			.entrySet()
+			.stream()
+			.max(Comparator.comparing(Entry::getValue))
+			.get()
+			.getKey();
+				
+		return result;
 	}
-	
-	private Float mostCommon(List<Float> values) {
-		if(values == null || values.size() == 0) {
-			return 0f;
-		}
-		
-		Collections.sort(values);
-		
-		Float res = values.get(0);
-		int max_count = 1;
-        int curr_count = 1;
-		
-        for (int i = 1; i < values.size(); i++)
-        {
-            if (values.get(i).equals(values.get(i-1)))
-                curr_count++;
-            else
-            {
-                if (curr_count > max_count)
-                {
-                    max_count = curr_count;
-                    res = values.get(i-1);
-                }
-                curr_count = 1;
-            }
-        }   
-        
-        if (curr_count > max_count)
-        {
-            max_count = curr_count;
-            res = values.get(values.size()-1);
-        }        
-		
-        return res;
-	}		
 }
