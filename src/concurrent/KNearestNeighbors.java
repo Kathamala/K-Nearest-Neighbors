@@ -7,10 +7,8 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
-import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
-import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
 import org.apache.spark.sql.types.DataTypes;
@@ -20,11 +18,7 @@ import org.apache.spark.sql.types.StructType;
 import scala.Tuple2;
 
 public class KNearestNeighbors {
-	int count = 0;
 	public int k = 5;
-	static final int NUMBER_OF_THREADS = Runtime.getRuntime().availableProcessors();	
-	
-	public ArrayList<ArrayList<Float>> data;
 	public ArrayList<Float> newData = new ArrayList<Float>();
 
 	public Float startKnn(ArrayList<Float> _newData) throws IOException, InterruptedException {		
