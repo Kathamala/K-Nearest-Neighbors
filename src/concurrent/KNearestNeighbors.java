@@ -2,31 +2,17 @@ package concurrent;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
-import org.apache.poi.util.SystemOutLogger;
-import org.apache.spark.SparkConf;
-import org.apache.spark.api.java.JavaRDD;
-import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
+import org.apache.spark.sql.functions;
 import org.apache.spark.sql.types.DataTypes;
 import org.apache.spark.sql.types.StructField;
 import org.apache.spark.sql.types.StructType;
 
-import com.healthmarketscience.jackcess.DataType;
-
 public class KNearestNeighbors {
-	int count = 0;
 	public int k = 5;
-	static final int NUMBER_OF_THREADS = Runtime.getRuntime().availableProcessors();	
-	
-	public ArrayList<ArrayList<Float>> data;
-	public ArrayList<Float> newData = new ArrayList<Float>();
-	public List<Item> distances = new ArrayList<Item>();
 
 	public Float startKnn(ArrayList<Float> _newData) throws IOException, InterruptedException {
 		SparkSession spark = SparkSession
@@ -103,63 +89,43 @@ public class KNearestNeighbors {
 				.schema(schema)
 				.load("src\\dataset\\dataset.json");
 		
+		String distancesSql = "POWER((fixed_acidity - " + _newData.get(0) + "), 2)"
+				+ " + POWER((volatile_acidity - " + _newData.get(1) + "), 2)"
+				+ " + POWER((citric_acid - " + _newData.get(2) + "), 2)"
+				+ " + POWER((residual_sugar - " + _newData.get(3) + "), 2)"
+				+ " + POWER((chlorides - " + _newData.get(4) + "), 2)"
+				+ " + POWER((free_sulfur_dioxide - " + _newData.get(5) + "), 2)"
+				+ " + POWER((total_sulfur_dioxide - " + _newData.get(6) + "), 2)"
+				+ " + POWER((density - " + _newData.get(7) + "), 2)"
+				+ " + POWER((ph - " + _newData.get(8) + "), 2)"
+				+ " + POWER((sulphates - " + _newData.get(9) + "), 2)"
+				+ " + POWER((alcohol - " + _newData.get(10) + "), 2)";
+		
+	    df = df.withColumn(
+		        "distances",
+		        functions.expr(distancesSql));
+	    
 		df.createOrReplaceTempView("maindata");
 
-		List<Row> f = spark.sql("SELECT * FROM maindata").collectAsList();
+		Dataset<Row> distances = spark.sql("SELECT quality FROM maindata "
+				+ "ORDER BY distances ASC "
+				+ "LIMIT " + k);
 		
-		f.forEach(row -> {
-			Float distance = 0f;
-			
-			for(int j=0; j<row.size()-1; j++) {
-				distance = (float) (distance + Math.pow((Float.parseFloat(row.getString(j)) - _newData.get(j)), 2));
-			}
-			
-			distances.add(new Item(distance, Float.parseFloat(row.getString(row.size()-1))));
-		});
-			
-		distances.sort(new ItemComparator());
-		
-		List<Float> classes = new ArrayList<Float>();
-		
-		for(int i=0; i<k; i++) {
-			classes.add(distances.get(i).classValue);
-		}
 
-		return mostCommon(classes);
-	}
-	
-	private Float mostCommon(List<Float> values) {
-		if(values == null || values.size() == 0) {
-			return 0f;
-		}
+		distances.createOrReplaceTempView("classes");
 		
-		Collections.sort(values);
+		Dataset<Row> result = spark.sql("SELECT quality, COUNT(quality) AS `value_occurrence` "
+				+ "FROM classes "
+				+ "GROUP BY quality "
+				+ "ORDER BY `value_occurrence` DESC "
+				+ "LIMIT 1");
 		
-		Float res = values.get(0);
-		int max_count = 1;
-        int curr_count = 1;
-		
-        for (int i = 1; i < values.size(); i++)
-        {
-            if (values.get(i).equals(values.get(i-1)))
-                curr_count++;
-            else
-            {
-                if (curr_count > max_count)
-                {
-                    max_count = curr_count;
-                    res = values.get(i-1);
-                }
-                curr_count = 1;
-            }
-        }   
-        
-        if (curr_count > max_count)
-        {
-            max_count = curr_count;
-            res = values.get(values.size()-1);
-        }        
-		
-        return res;
-	}		
+		return Float.parseFloat(result.collectAsList().get(0).get(0).toString());
+	}	
 }
+
+
+
+
+
+
